@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VessPay Native Splash Screen (API 21+) -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background gradient color -->
+    <item android:drawable="@color/launch_background" />
+
+    <!-- VessPay Logo centered on screen -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/ic_launcher" />
+    </item>
+</layer-list>
