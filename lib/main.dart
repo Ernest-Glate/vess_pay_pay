@@ -46,13 +46,43 @@ class VessPayApp extends ConsumerWidget {
       theme: AppTheme.darkTheme,
       routerConfig: router,
       builder: (context, child) {
-        // Restrict app to mobile-like dimensions on Web/Desktop
+        final screenWidth = MediaQuery.of(context).size.width;
+        // On a real phone (< 600px wide) → use full width natively
+        // On desktop/tablet (>= 600px) → show centered mobile frame
+        if (screenWidth < 600) {
+          return child!;
+        }
         return Container(
-          color: const Color(0xFF0D0D0D), // Dark background for the empty space
+          color: const Color(0xFF0A0A0A),
           child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450),
-              child: ClipRect(child: child!),
+            child: SizedBox(
+              width: 430,
+              child: Stack(
+                children: [
+                  // Phone frame shadow
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(44),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.6),
+                          blurRadius: 60,
+                          spreadRadius: 20,
+                        ),
+                        BoxShadow(
+                          color: const Color(0xFFD4AF37).withOpacity(0.06),
+                          blurRadius: 80,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(44),
+                      child: child!,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

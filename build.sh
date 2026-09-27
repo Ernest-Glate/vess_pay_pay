@@ -1,20 +1,24 @@
 #!/bin/bash
-# Vercel build script for Flutter Web
+set -e  # Exit immediately if any command fails
 
-echo "1. Downloading Flutter (stable branch)..."
-git clone https://github.com/flutter/flutter.git -b stable --depth 1
+echo "==> Step 1: Cloning Flutter stable..."
+git clone https://github.com/flutter/flutter.git --branch stable --depth 1 flutter-sdk
 
-echo "2. Adding Flutter to PATH..."
-export PATH="$PATH:`pwd`/flutter/bin"
+echo "==> Step 2: Adding Flutter to PATH..."
+export PATH="$PATH:$(pwd)/flutter-sdk/bin"
 
-echo "3. Initializing Flutter..."
-flutter precache
+echo "==> Step 3: Verifying Flutter..."
+flutter --version
 
-echo "4. Getting packages..."
+echo "==> Step 4: Disabling analytics..."
+flutter config --no-analytics
+
+echo "==> Step 5: Getting dependencies..."
 flutter pub get
 
-echo "5. Building for Web..."
-# Using html renderer for better compatibility, or you can use canvaskit
+echo "==> Step 6: Building Flutter Web (CanvasKit)..."
 flutter build web --release --web-renderer canvaskit
 
-echo "Build Complete!"
+echo "==> BUILD COMPLETE. Output is in: $(pwd)/build/web"
+ls build/web
+
