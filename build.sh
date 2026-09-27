@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e  # Exit immediately if any command fails
+set -e
 
 echo "==> Step 1: Cloning Flutter stable..."
 git clone https://github.com/flutter/flutter.git --branch stable --depth 1 flutter-sdk
@@ -8,17 +8,17 @@ echo "==> Step 2: Adding Flutter to PATH..."
 export PATH="$PATH:$(pwd)/flutter-sdk/bin"
 
 echo "==> Step 3: Verifying Flutter..."
-flutter --version
+flutter --version --suppress-analytics
 
 echo "==> Step 4: Disabling analytics..."
-flutter config --no-analytics
+flutter config --no-analytics --suppress-analytics
 
 echo "==> Step 5: Getting dependencies..."
-flutter pub get
+flutter pub get --suppress-analytics
 
-echo "==> Step 6: Building Flutter Web (CanvasKit)..."
-flutter build web --release --web-renderer canvaskit
+echo "==> Step 6: Building Flutter Web..."
+flutter build web --release --suppress-analytics
 
-echo "==> BUILD COMPLETE. Output is in: $(pwd)/build/web"
-ls build/web
+echo "==> BUILD COMPLETE. Output:"
+ls -la build/web
 
