@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="VessPay - Secure, Safe and Easy mobile money transfer">
+  <!-- Full native-app feel: no user zoom, portrait lock, fills screen edge-to-edge -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0A1410">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VessPay">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <title>VessPay - Secure Mobile Money</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* Prevent white flash on load - match app theme */
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #0A1410 0%, #1a3a2e 100%);
+      overflow: hidden;
+    }
+
+    /* Loading screen - shows VessPay logo matching the Flutter splash screen */
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #0A1410 0%, #1a3a2e 100%);
+      z-index: 9999;
+    }
+
+    #loading-logo {
+      width: 180px;
+      height: 180px;
+      margin-bottom: 32px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    #loading-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    /* Smooth fade-out when Flutter is ready */
+    body.flutter-ready #loading {
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Loading screen - uses actual VessPay logo, matching Flutter splash screen -->
+  <div id="loading">
+    <div id="loading-logo">
+      <img src="assets/images/vesspay_logo.png" alt="VessPay" />
+    </div>
+
+  </div>
+
+  <script src="flutter_bootstrap.js" async></script>
+
+  <script>
+    // Remove loading screen when Flutter is ready
+    var flutterReady = false;
+    window.addEventListener('flutter-first-frame', function () {
+      flutterReady = true;
+      document.body.classList.add('flutter-ready');
+      setTimeout(() => {
+        const loading = document.getElementById('loading');
+        if (loading) loading.remove();
+      }, 500);
+    });
+
+    // Safety timeout: remove loading screen after 10 seconds
+    // even if Flutter fails to initialize (prevents permanent loading state)
+    setTimeout(function () {
+      if (!flutterReady) {
+        console.warn('Flutter did not load within 10 seconds — removing loading screen');
+        document.body.classList.add('flutter-ready');
+        var loading = document.getElementById('loading');
+        if (loading) loading.remove();
+      }
+    }, 10000);
+  </script>
+</body>
+
+</html>
